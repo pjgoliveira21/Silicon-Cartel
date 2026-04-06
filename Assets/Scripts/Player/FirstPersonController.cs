@@ -77,7 +77,8 @@ public class FirstPersonController : MonoBehaviour
         }
         else
         {
-            animator.SetBool(inputHandler.SprintTriggered ? "Running" : "Walking", false);
+            animator.SetBool("Running", false);
+            animator.SetBool("Walking", false);
         }
 
         HandleJumping();
