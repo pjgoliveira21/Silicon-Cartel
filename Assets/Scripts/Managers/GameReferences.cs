@@ -33,25 +33,18 @@ public class GameReferences : MonoBehaviour
 
         Instance = this;
 
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player");
+        player ??= GameObject.FindWithTag("Player");
 
-        if (playerInputHandler == null)
-            playerInputHandler = FindAnyObjectByType<PlayerInputHandler>();
+        playerInputHandler ??= FindAnyObjectByType<PlayerInputHandler>();
 
-        if (playerCamera == null)
-            playerCamera = Camera.main;
+        playerCamera ??= Camera.main;
 
-        if (inventoryManager == null)
-            inventoryManager = FindAnyObjectByType<InventoryManager>();
+        inventoryManager ??= FindAnyObjectByType<InventoryManager>();
 
-        if (playerAnimator == null)
-            playerAnimator = player.GetComponentInChildren<Animator>();
+        playerAnimator ??= player.GetComponentInChildren<Animator>();
 
-        if (playerController == null)
-            playerController = player.GetComponent<CharacterController>();
+        playerController ??= player.GetComponent<CharacterController>();
 
-        if (mainCanvas == null)
-            mainCanvas = FindAnyObjectByType<Canvas>();
+        mainCanvas ??= FindAnyObjectByType<Canvas>();
     }
 }

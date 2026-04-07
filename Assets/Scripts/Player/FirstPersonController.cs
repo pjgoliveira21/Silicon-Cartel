@@ -9,8 +9,8 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private float sprintMultiplier = 2.0f;
 
     [Header("Jump Parameters")]
-    [SerializeField] private float jumpForce = 5.0f;
-    [SerializeField] private float gravityMultiplier = 1f;
+    [SerializeField] private float jumpForce = 2.0f;
+    [SerializeField] private float gravityMultiplier = 2.0f;
 
     [Header("Look Parameters")]
     [SerializeField] private float mouseSensitivity = 0.1f;
@@ -27,13 +27,14 @@ public class FirstPersonController : MonoBehaviour
 
     void Awake()
     {
-        cameraTransform = GameReferences.Instance.PlayerCamera.transform;
-        characterController = GameReferences.Instance.PlayerController;
-        inputHandler = GameReferences.Instance.PlayerInputHandler;
-        animator = GameReferences.Instance.PlayerAnimator;
+        
     }
     void Start()
     {
+        characterController = GameReferences.Instance.PlayerController;
+        inputHandler = GameReferences.Instance.PlayerInputHandler;
+        animator = GameReferences.Instance.PlayerAnimator;
+        cameraTransform = GameReferences.Instance.PlayerCamera.transform;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
