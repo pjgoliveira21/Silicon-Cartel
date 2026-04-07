@@ -16,16 +16,22 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private float mouseSensitivity = 0.1f;
     [SerializeField] private float upDownLookLimit = 85.0f;
 
-    [Header("References")]
-    [SerializeField] private Transform cameraTransform;
-    [SerializeField] private CharacterController characterController;
-    [SerializeField] private PlayerInputHandler inputHandler;
-    [SerializeField] private Animator animator;
+    private Transform cameraTransform;
+    private CharacterController characterController;
+    private PlayerInputHandler inputHandler;
+    private Animator animator;
 
     private Vector3 currentMovement;
     private float verticalLookRotation;
-    private float CurrentSpeed => walkSpeed * (inputHandler.SprintTriggered ? sprintMultiplier : 1);
+    private float CurrentSpeed => walkSpeed * (inputHandler.SprintHeld ? sprintMultiplier : 1);
 
+    void Awake()
+    {
+        cameraTransform = GameReferences.Instance.PlayerCamera.transform;
+        characterController = GameReferences.Instance.PlayerController;
+        inputHandler = GameReferences.Instance.PlayerInputHandler;
+        animator = GameReferences.Instance.PlayerAnimator;
+    }
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -51,7 +57,7 @@ public class FirstPersonController : MonoBehaviour
         {
             currentMovement.y = -0.5f; // Small downward force to keep the player grounded
 
-            if (inputHandler.JumpTriggered)
+            if (inputHandler.JumpHeld)
             {
                 currentMovement.y = jumpForce;
                 animator.SetTrigger("Jumping");
@@ -73,7 +79,7 @@ public class FirstPersonController : MonoBehaviour
         if(currentMovement.magnitude > 1f)
         {
 
-            animator.SetBool(inputHandler.SprintTriggered ? "Running" : "Walking", true);
+            animator.SetBool(inputHandler.SprintHeld ? "Running" : "Walking", true);
         }
         else
         {

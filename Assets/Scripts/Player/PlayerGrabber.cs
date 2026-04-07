@@ -15,41 +15,48 @@ public class PlayerGrabber : MonoBehaviour
     private Rigidbody currentItemRb;
 
     private float grabbedDistance;
-    private bool interactWasPressedLastFrame;
 
     private Vector3 lastHeldPosition;
     private Vector3 heldVelocity;
 
+    private void OnEnable()
+    {
+        if (inputHandler != null)
+        {
+            inputHandler.OnGrabPressed += HandleGrabPressed;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (inputHandler != null)
+        {
+            inputHandler.OnGrabPressed -= HandleGrabPressed;
+        }
+    }
+
     private void Update()
     {
-        HandleGrabInput();
         UpdateHeldItemPosition();
     }
 
-    private void HandleGrabInput()
+    private void HandleGrabPressed()
     {
-        bool grabPressed = inputHandler.GrabTriggered;
-
-        if (grabPressed && !interactWasPressedLastFrame)
+        if (currentItem == null)
         {
-            if (currentItem == null)
-            {
-                TryGrabItem();
-            }
-            else
-            {
-                DropItem();
-            }
+            TryGrabItem();
         }
-
-        interactWasPressedLastFrame = grabPressed;
+        else
+        {
+            DropItem();
+        }
     }
 
     private void TryGrabItem()
     {
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
-        // Check for grabbable objects in front of the player
+        // Verifica se existe um objeto agarrável à frente do jogador
         if (Physics.Raycast(ray, out RaycastHit hit, grabDistance, grabbableLayer))
         {
             GrabbableItem item = hit.collider.GetComponentInParent<GrabbableItem>();
